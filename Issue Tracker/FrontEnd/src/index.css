@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  background-color: var(--color-color-bg-light-yellow);
+}
+
+@theme {
+  /* 🌟 Sunny Yellow Palette */
+  --color-color-bg-light-yellow: #fffbeb; /* Soft pale yellow background */
+  --color-color-primary-accent-yellow: #fbbf24; /* Warm golden yellow */
+  --color-color-secondary-accent-yellow: #f59e0b; /* Deep amber yellow */
+  --color-color-neutral-dark-text-yellow: #92400e; /* Dark brownish text */
+  --color-color-muted-gray-yellow: #fef3c7; /* Light creamy yellow */
+}
