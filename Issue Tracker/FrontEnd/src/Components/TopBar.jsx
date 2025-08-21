@@ -1,23 +1,9 @@
-import TopBar from "./TopBar";
-import Open from "./Open";
-import InProgress from "./InProgress";
-import Resolved from "./Resolved";
+export default function TopBar({title = "No Title"}) {
 
-export default function Home() {
   return (
-    <>
-      <TopBar title="Issue Tracker"></TopBar>
-      <div className="flex pl-5">
-        <button className="bg-color-secondary-accent-yellow my-5 px-2 py-1.5 font-bold text-[clamp(15px,3vw,30px)] rounded-lg hover:bg-[hsl(38,92%,40%)] active:bg-[hsl(38,92%,40%)]">
-          + New Issue
-        </button>
-      </div>
-      <div className="sm:grid-cols-3 sm:grid justify-items-center">
-        <Open></Open>
-        <InProgress></InProgress>
-        <Resolved></Resolved>
-      </div>
-    </>
+    <div className="bg-color-muted-gray-yellow flex">
+      <h1 className="bg-color-primary-accent-yellow sm:font-bold font-black px-5 py-2 text-[clamp(25px,3vw,50px)] mx-auto my-5 rounded-lg ">{title}</h1>
+    </div>
   );
 }
 
