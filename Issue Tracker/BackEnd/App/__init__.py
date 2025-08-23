@@ -5,14 +5,19 @@ from pathlib import Path
 from dotenv import load_dotenv
 import logging, os
 
-logging.basicConfig(level=logging.INFO, filename="Main.log", filemode="w", 
-                    format="%(filename)s - %(asctime)s - %(levelname)s - %(message)s",
-                    datefmt="%Y-%M-%D %H:%M:%S")
+FORMAT = "%(filename)s - %(asctime)s - %(levelname)s - %(message)s"
+DATEFMT ="%Y-%M-%D %H:%M:%S"
+
+logging.basicConfig(level=logging.INFO, 
+                    filename="Main.log", 
+                    filemode="w", 
+                    format= FORMAT,
+                    datefmt= DATEFMT)
 
 db = SQLAlchemy()
 env_path = Path(__file__).resolve().parent.parent / ".env"
-
 load_dotenv(dotenv_path=env_path)
+
 DB_NAME = os.getenv("DB_NAME")
 
 logger = logging.getLogger(__name__)
