@@ -35,8 +35,16 @@ body {
   .cardButton button {
     @apply hover:scale-125 active:scale-125 transi;
   }
+
   .formInput {
-    @apply bg-white rounded-lg ml-auto w-[70%] px-2;
+    @apply bg-white rounded-lg mx-auto w-full px-2;
+  }
+
+  .formPointer label  {
+    @apply cursor-pointer;
+  }
+  .formPointer button  {
+    @apply cursor-pointer;
   }
 }
 

@@ -16,7 +16,7 @@ export default function Home() {
       <TopBar title="Issue Tracker"></TopBar>
       <div className="flex pl-5">
         <button
-          className=" my-5 px-2 py-1.5 font-bold text-[clamp(20px,3vw,35px)] rounded-lg transi bg-color-secondary-accent-yellow hover:bg-[hsl(38,92%,40%)] active:bg-[hsl(38,92%,40%)]"
+          className=" my-5 px-2 py-1.5 font-bold text-[clamp(20px,3vw,35px)] rounded-lg cursor-pointer transi bg-color-secondary-accent-yellow hover:bg-[hsl(38,92%,40%)] active:bg-[hsl(38,92%,40%)]"
           onClick={handleFormShow}
         >
           + New Issue

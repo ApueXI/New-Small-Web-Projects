@@ -1,4 +1,4 @@
-export default function IssueCard({ title = "No Title", priority = 50 }) {
+export default function IssueCard({ title = "No Title", priority = 10 }) {
   const priorityText = () => {
     if (priority >= 7) {
       return "High Priority";
@@ -10,10 +10,10 @@ export default function IssueCard({ title = "No Title", priority = 50 }) {
   };
 
   return (
-    <div className="bg-color-primary-accent-yellow flex flex-col gap-1 w-full text-[clamp(15px,1.5vw,25px)] rounded-lg px-5 py-2">
+    <div className="bg-color-primary-accent-yellow flex flex-col gap-1 w-full text-[clamp(15px,2vw,25px)] rounded-lg px-5 py-2">
       <h5>Title: {title}</h5>
       <h5>Priority: {priorityText()}</h5>
-      <div className="inline-block mx-auto space-x-7 cardButton">
+      <div className="inline-block mx-auto space-x-7 cardButton formPointer">
         <button>View</button>
         <button>Edit</button>
       </div>
