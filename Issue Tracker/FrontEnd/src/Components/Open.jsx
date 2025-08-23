@@ -1,36 +1,23 @@
-import TopBar from "./TopBar";
-import Open from "./Open";
-import InProgress from "./InProgress";
-import Resolved from "./Resolved";
-import IssueForm from "./IssueForm";
-import { useState } from "react";
+import IssueCard from "./IssueCard";
 
-export default function Home() {
-  const [showForm, SetShowForm] = useState(false);
-
-  const handleFormShow = () => SetShowForm(true);
-  const handleFormHide = () => SetShowForm(false);
-
+export default function Open() {
   return (
-    <>
-      <TopBar title="Issue Tracker"></TopBar>
-      <div className="flex pl-5">
-        <button
-          className=" my-5 px-2 py-1.5 font-bold text-[clamp(20px,3vw,35px)] rounded-lg cursor-pointer transi bg-color-secondary-accent-yellow hover:bg-[hsl(38,92%,40%)] active:bg-[hsl(38,92%,40%)]"
-          onClick={handleFormShow}
-        >
-          + New Issue
-        </button>
+    <div className="bg-red-500 issueCard flex-Col-Center">
+      <h1 className="bg-red-300 issueTitle">OPEN</h1>
+      <div className="issueItem">
+        <IssueCard priority={7}></IssueCard>
+        <IssueCard priority={2}></IssueCard>
+        <IssueCard priority={4}></IssueCard>
+        <IssueCard></IssueCard>
+        <IssueCard></IssueCard>
+        <IssueCard></IssueCard>
+        <IssueCard></IssueCard>
+        <IssueCard></IssueCard>
+        <IssueCard></IssueCard>
+        <IssueCard></IssueCard>
+        <IssueCard></IssueCard>
       </div>
-
-      {showForm && <IssueForm hideForm={handleFormHide} />}
-
-      <div className="flex flex-col items-center md:justify-evenly md:flex-row py-10 overflow-hidden bg-color-muted-gray-yellow">
-        <Open></Open>
-        <InProgress></InProgress>
-        <Resolved></Resolved>
-      </div>
-    </>
+    </div>
   );
 }
 
