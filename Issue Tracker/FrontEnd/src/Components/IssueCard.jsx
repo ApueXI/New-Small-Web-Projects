@@ -1,8 +1,22 @@
-export default function TopBar({title = "No Title"}) {
+export default function IssueCard({ title = "No Title", priority = 50 }) {
+  const priorityText = () => {
+    if (priority >= 7) {
+      return "High Priority";
+    } else if (priority >= 4) {
+      return "Medium Priority";
+    } else {
+      return "Low Priority";
+    }
+  };
 
   return (
-    <div className="bg-[hsl(48,96%,79%)] flex">
-      <h1 className="bg-[hsl(23,83%,51%)] sm:font-bold font-black px-5 py-2 text-[clamp(25px,3vw,50px)] mx-auto my-5 rounded-lg ">{title}</h1>
+    <div className="bg-color-primary-accent-yellow flex flex-col gap-1 w-full text-[clamp(15px,1.5vw,25px)] rounded-lg px-5 py-2">
+      <h5>Title: {title}</h5>
+      <h5>Priority: {priorityText()}</h5>
+      <div className="inline-block mx-auto space-x-7 cardButton">
+        <button>View</button>
+        <button>Edit</button>
+      </div>
     </div>
   );
 }
