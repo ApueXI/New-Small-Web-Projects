@@ -1,18 +1,16 @@
 import IssueCard from "./IssueCard";
 
-export default function Resolved() {
+export default function Resolved({ datas }) {
   return (
     <div className="bg-green-500 issueCard flex-Col-Center">
       <h1 className="bg-green-300 issueTitle">Resolved</h1>
       <div className="issueItem">
-        <IssueCard priority={7}></IssueCard>
-        <IssueCard priority={2}></IssueCard>
-        <IssueCard priority={4}></IssueCard>
-        <IssueCard priority={30}></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
+        {datas.map((data) => (
+          <IssueCard
+            key={data.id}
+            data={data}
+          />
+        ))}
       </div>
     </div>
   );

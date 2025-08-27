@@ -1,21 +1,33 @@
-export default function IssueCard({ title = "No Title", priority = 10 }) {
+import { Link } from "react-router-dom";
+import { handleForm } from "../Pages/Home";
+import { useContext } from "react";
+
+export default function IssueCard({ data }) {
+  const formShowHide = useContext(handleForm);
+  const { setShowForm } = formShowHide;
+
   const priorityText = () => {
-    if (priority >= 7) {
-      return "High Priority";
-    } else if (priority >= 4) {
-      return "Medium Priority";
-    } else {
-      return "Low Priority";
-    }
+    if (data.priority_level >= 7) return "High Priority";
+    else if (data.priority_level >= 4) return "Medium Priority";
+    else return "Low Priority";
   };
 
   return (
-    <div className="bg-color-primary-accent-yellow flex flex-col gap-1 w-full text-[clamp(15px,2vw,25px)] rounded-lg px-5 py-2">
-      <h5>Title: {title}</h5>
-      <h5>Priority: {priorityText()}</h5>
+    <div className="bg-color-primary-accent-yellow flex flex-col gap-1 w-full text-[clamp(15px,2vw,20px)] rounded-lg px-5 py-2">
+      <h5 className="text-[clamp(18px,2vw,23px)] font-black">
+        #{data.id} {data.title}
+      </h5>
+      <h3>{priorityText()}</h3>
       <div className="inline-block mx-auto space-x-7 cardButton formPointer">
-        <button>View</button>
+        <Link
+          to={`/view/${data.id}`}
+          state={{ data }}
+          className="hover:scale-125 active:scale-125 transi inline-block"
+        >
+          View
+        </Link>
         <button>Edit</button>
+        <button>Delete</button>
       </div>
     </div>
   );

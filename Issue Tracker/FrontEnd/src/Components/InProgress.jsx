@@ -1,18 +1,16 @@
 import IssueCard from "./IssueCard";
 
-export default function InProgress() {
+export default function InProgress({ datas }) {
   return (
     <div className="bg-blue-600 issueCard flex-Col-Center">
-      <h1 className="bg-blue-400 issueTitle">In Progess</h1>
+      <h1 className="bg-blue-400 issueTitle">In Progress</h1>
       <div className="issueItem">
-        <IssueCard priority={7}></IssueCard>
-        <IssueCard priority={2}></IssueCard>
-        <IssueCard priority={4}></IssueCard>
-        <IssueCard priority={30}></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
+        {datas.map((data) => (
+          <IssueCard
+            key={data.id}
+            data={data}
+          />
+        ))}
       </div>
     </div>
   );

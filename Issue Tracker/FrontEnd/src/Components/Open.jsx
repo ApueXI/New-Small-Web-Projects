@@ -1,21 +1,16 @@
 import IssueCard from "./IssueCard";
 
-export default function Open() {
+export default function Open({ datas }) {
   return (
     <div className="bg-red-500 issueCard flex-Col-Center">
-      <h1 className="bg-red-300 issueTitle">OPEN</h1>
+      <h1 className="bg-red-300 issueTitle">Open</h1>
       <div className="issueItem">
-        <IssueCard priority={7}></IssueCard>
-        <IssueCard priority={2}></IssueCard>
-        <IssueCard priority={4}></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
-        <IssueCard></IssueCard>
+        {datas.map((data) => (
+          <IssueCard
+            key={data.id}
+            data={data}
+          />
+        ))}
       </div>
     </div>
   );

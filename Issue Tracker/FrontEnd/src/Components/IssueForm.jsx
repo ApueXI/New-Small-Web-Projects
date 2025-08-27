@@ -1,8 +1,30 @@
-export default function IssueForm({ hideForm }) {
-  const submitData = (e) => {
+import { useState } from "react";
+
+export default function IssueForm({ hideForm, data, submitData }) {
+  const [titleData, setTitleData] = useState(data?.title || null);
+  const [priorityLevelData, setPriorityLevelData] = useState(
+    data?.priority_level || null
+  );
+  const [detailsData, setDetailsData] = useState(data?.details || null);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submiteted Data");
-    hideForm();
+
+    const submitDatas = {};
+
+    submitDatas.title = titleData.trim();
+    submitDatas.priority_level = priorityLevelData;
+    submitDatas.details = detailsData.trim();
+
+    submitData(submitDatas);
+
+    if (!data) {
+      setTitleData("");
+      setPriorityLevelData(1);
+      setDetailsData("");
+    }
+
+    console.log("Submitted to the backend");
   };
 
   return (
@@ -21,7 +43,7 @@ export default function IssueForm({ hideForm }) {
         </div>
 
         <form
-          onSubmit={submitData}
+          onSubmit={handleSubmit}
           className="bg-[hsl(253,42%,72%)] text-[clamp(15px,2vw,25px)]  w-[80%] font-bold p-5 rounded-lg flex flex-col gap-y-5 formPointer"
         >
           <div className="flex flex-col">
@@ -30,7 +52,9 @@ export default function IssueForm({ hideForm }) {
               type="text"
               name="title"
               id="title"
-              placeholder="e.g. #10 Log-in Form Bug"
+              placeholder="e.g. Log-in Form Bug"
+              value={titleData}
+              onChange={(e) => setTitleData(e.target.value)}
               className="formInput"
             />
           </div>
@@ -44,6 +68,8 @@ export default function IssueForm({ hideForm }) {
               placeholder="1-10"
               min={1}
               max={10}
+              value={priorityLevelData}
+              onChange={(e) => setPriorityLevelData(Number(e.target.value))}
               className="formInput"
             />
           </div>
@@ -53,7 +79,9 @@ export default function IssueForm({ hideForm }) {
             <textarea
               name="issueDetail"
               id="issueDetail"
-              placeholder="Log-in form returns an error whenever i submit it"
+              placeholder="e.g. Log-in form returns an error whenever i submit it"
+              value={detailsData}
+              onChange={(e) => setDetailsData(e.target.value)}
               className="formInput"
             ></textarea>
           </div>
