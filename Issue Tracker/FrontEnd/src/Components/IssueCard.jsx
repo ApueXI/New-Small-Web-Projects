@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
-import { handleForm } from "../Pages/Home";
-import { useContext } from "react";
 
 export default function IssueCard({ data }) {
-  const formShowHide = useContext(handleForm);
-  const { setShowForm } = formShowHide;
-
   const priorityText = () => {
     if (data.priority_level >= 7) return "High Priority";
     else if (data.priority_level >= 4) return "Medium Priority";
@@ -26,7 +21,6 @@ export default function IssueCard({ data }) {
         >
           View
         </Link>
-        <button>Edit</button>
         <button>Delete</button>
       </div>
     </div>

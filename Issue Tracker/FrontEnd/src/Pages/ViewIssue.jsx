@@ -2,7 +2,7 @@ import TopBar from "../Components/TopBar";
 import IssueForm from "../Components/IssueForm";
 import { useLocation, Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getData } from "../API/issuetracker";
+import { getIndividualData } from "../API/issuetracker";
 
 export default function ViewIsssue() {
   const location = useLocation();
@@ -12,17 +12,17 @@ export default function ViewIsssue() {
   const [showForm, SetShowForm] = useState(false);
 
   useEffect(() => {
-    const loadData = async () => {
-      if (!issueData) {
-        const loadedData = await getData();
-        const foundIssue = loadedData.message.find((n) => id == n.id);
-
-        setIssueData(foundIssue);
-      }
-    };
-
     loadData();
   }, [id, issueData]);
+
+  const loadData = async () => {
+    if (!issueData) {
+      const loadedData = await getIndividualData(id);
+      console.log(loadedData);
+
+      setIssueData(loadedData.message);
+    }
+  };
 
   const handleFormShow = () => SetShowForm(true);
   const handleFormHide = () => SetShowForm(false);

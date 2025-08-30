@@ -30,13 +30,12 @@ def run_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     app.config["SECRET_KEY"] = SECRET_KEY
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+    
     from .IssueTracker import issue_tracker
     app.register_blueprint( issue_tracker, url_prefix="/api")
 
-    CORS(app)
-
     db.init_app(app)
+    CORS(app)
 
     create_database(app)
 

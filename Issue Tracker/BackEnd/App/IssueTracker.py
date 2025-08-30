@@ -17,13 +17,28 @@ issue_tracker = Blueprint("issue_tracker", __name__)
 @issue_tracker.route("/issue/get", methods=["GET"])
 def get_issues():
 
-    sort = request.args.get("sort", "asc")
+    sort = request.args.get("sort", "desc")
+    statusD = request.args.get("query", "open")
 
-    order = Issues.id.asc() if sort == "asc" else Issues.id.desc()
+    order = Issues.id.desc() if sort == "asc" else Issues.id.asc()
 
-    issues = Issues.query.order_by(order).all()
+    issues = Issues.query.filter(Issues.status.ilike(f"{statusD}")).order_by(order).all()
 
     data = [issue.get_data() for issue in issues]
+
+    logger.info(f"{issues}")
+
+    return jsonify({"status" : "success", "ok" : True, 
+                    "from" : "Python", "message" : data}), 200
+
+@issue_tracker.route("/issue/get/<int:id>", methods=["GET"])
+def get_issues_solo(id):
+
+    issue = Issues.query.get_or_404(id)
+
+    data = issue.get_data()
+
+    logger.info(f"{issue} {data}")
 
     return jsonify({"status" : "success", "ok" : True, 
                     "from" : "Python", "message" : data}), 200
@@ -60,6 +75,24 @@ def send_issues():
     
     return jsonify({"status" : "success", "ok" : True, 
                     "from" : "Python", "message" : data}), 200
+
+@issue_tracker.route("/issue/delete/<int:id>", methods=["DELETE"])
+def delete_issue(id):
+
+    issue = Issues.query.get_or_404(id)
+
+    db.session.delete(issue)
+
+    success, error = commit_session()
+    
+    if not success:
+        logger.exception(f"Error occurred: {error}")
+        return jsonify({ "status": "error", "ok": False,"message":error, "from" : "Python" }), 500
+
+    logger.info(f"{issue} deleted")
+
+    return jsonify({"status" : "success", "ok" : True, 
+                    "from" : "Python", "message" : True}), 200
 
 def commit_session():
     try:

@@ -1,11 +1,11 @@
 import { useState } from "react";
 
 export default function IssueForm({ hideForm, data, submitData }) {
-  const [titleData, setTitleData] = useState(data?.title || null);
+  const [titleData, setTitleData] = useState(data?.title);
   const [priorityLevelData, setPriorityLevelData] = useState(
-    data?.priority_level || null
+    data?.priority_level
   );
-  const [detailsData, setDetailsData] = useState(data?.details || null);
+  const [detailsData, setDetailsData] = useState(data?.details);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ export default function IssueForm({ hideForm, data, submitData }) {
   };
 
   return (
-    <div className="relative flex-Col-Center">
+    <div className="relative flex-Col-Center z-10">
       <div className="sm:w-[clamp(200px,60vw,600px)] w-[90%] pb-13 fixed rounded-md flex-Col-Center bg-[#3F3075] ">
         <div className="flex w-full">
           <h1 className="my-auto ml-6 bg-[hsl(253,42%,62%)] font-bold px-2 py-1.5 rounded-lg text-[clamp(20px,1.3vw,50px)]">
@@ -82,7 +82,7 @@ export default function IssueForm({ hideForm, data, submitData }) {
               placeholder="e.g. Log-in form returns an error whenever i submit it"
               value={detailsData}
               onChange={(e) => setDetailsData(e.target.value)}
-              className="formInput"
+              className="formInput h-56"
             ></textarea>
           </div>
 
