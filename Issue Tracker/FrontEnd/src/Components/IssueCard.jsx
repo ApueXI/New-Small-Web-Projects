@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
+import { deleteData } from "../API/issuetracker";
+import { useContext } from "react";
+import { LoadDataContext } from "../Pages/Home";
 
 export default function IssueCard({ data }) {
   const priorityText = () => {
     if (data.priority_level >= 7) return "High Priority";
     else if (data.priority_level >= 4) return "Medium Priority";
     else return "Low Priority";
+  };
+
+  const loadData = useContext(LoadDataContext);
+
+  const handleDelete = () => {
+    deleteData(data.id);
+    loadData();
   };
 
   return (
@@ -21,7 +31,7 @@ export default function IssueCard({ data }) {
         >
           View
         </Link>
-        <button>Delete</button>
+        <button onClick={handleDelete}>Delete</button>
       </div>
     </div>
   );

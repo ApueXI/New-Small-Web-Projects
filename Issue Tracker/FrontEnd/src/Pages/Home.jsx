@@ -3,8 +3,10 @@ import Open from "../Components/Open";
 import InProgress from "../Components/InProgress";
 import Resolved from "../Components/Resolved";
 import IssueForm from "../Components/IssueForm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { getData, sendData } from "../API/issuetracker";
+
+export const LoadDataContext = createContext();
 
 export function Home() {
   const [showForm, SetShowForm] = useState(false);
@@ -56,9 +58,11 @@ export function Home() {
       </div>
 
       <div className="flex flex-col items-center md:justify-evenly md:flex-row py-10 overflow-hidden bg-color-muted-gray-yellow">
-        <Open datas={openData}></Open>
-        <InProgress datas={prograssData}></InProgress>
-        <Resolved datas={ResolvedData}></Resolved>
+        <LoadDataContext.Provider value={loadData}>
+          <Open datas={openData}></Open>
+          <InProgress datas={prograssData}></InProgress>
+          <Resolved datas={ResolvedData}></Resolved>
+        </LoadDataContext.Provider>
       </div>
     </>
   );

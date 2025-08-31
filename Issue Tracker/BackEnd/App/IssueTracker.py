@@ -92,7 +92,33 @@ def delete_issue(id):
     logger.info(f"{issue} deleted")
 
     return jsonify({"status" : "success", "ok" : True, 
-                    "from" : "Python", "message" : True}), 200
+                    "from" : "Python", "message" : "Deleted Succesfully"}), 200
+
+@issue_tracker.route("/issue/update/<int:id>", methods=["PATCH"])
+def update_issue(id):
+    issue = Issues.query.get_or_404(id)
+
+    data = request.get_json()
+
+    if "title" in data:
+        issue.title = data.get("title")
+    if "priority_level" in data:
+        issue.priority_level = data.get("priority_level")
+    if "details" in data:
+        issue.details = data.get("details")
+    if "status" in data:
+        issue.status = data.get("status")
+
+    success, error = commit_session()
+
+    if not success:
+        logger.exception(f"Error occurred: {error}")
+        return jsonify({ "status": "error", "ok": False,"message": error, "from" : "Python" }), 500
+    
+    logger.info(f"{issue} updated")
+
+    return jsonify({"status" : "success", "ok" : True, 
+                    "from" : "Python", "message" : "Updated Sccuesfully"}), 200
 
 def commit_session():
     try:

@@ -7,6 +7,9 @@ class Issues(db.Model):
     details = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(10), nullable=False)
 
+    def __repr__(self):
+        return f"No.{self.id}"
+
     def get_data(self):
         return{
             "id" : self.id,
