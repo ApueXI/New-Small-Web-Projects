@@ -59,6 +59,13 @@ def send_issues():
         logger.error(message)
         return jsonify({"status" : "error", "ok" : False, 
                     "from" : "Python", "message" : message}), 400
+    
+    if not title_validate(title) or not priority_level_validate(priority_level):
+        message = "Title or Priority Level must be wihthin requirements"
+
+        logger.error(message)
+        return jsonify({"status" : "error", "ok" : False, 
+                    "from" : "Python", "message" : message}), 400
 
     issue = Issues(title=title, priority_level=priority_level, details=details, status=status)
 
@@ -100,6 +107,13 @@ def update_issue(id):
 
     data = request.get_json()
 
+    if not title_validate(data.get("title")) or not priority_level_validate(data.get("priority_level")):
+        message = "Title or Priority Level must be wihthin requirements"
+
+        logger.error(message)
+        return jsonify({"status" : "error", "ok" : False, 
+                    "from" : "Python", "message" : message}), 400
+
     if "title" in data:
         issue.title = data.get("title")
     if "priority_level" in data:
@@ -108,6 +122,7 @@ def update_issue(id):
         issue.details = data.get("details")
     if "status" in data:
         issue.status = data.get("status")
+
 
     success, error = commit_session()
 
@@ -129,3 +144,23 @@ def commit_session():
         db.session.rollback()
         logger.exception(f"Failed to commit to the database")
         return (False, str(e))
+    
+
+def title_validate(title):
+    if not (4 < len(title) < 30):
+        return False
+    
+    if not title.strip():
+        return False
+    
+    return True
+
+def priority_level_validate(priority_level):
+
+    if not isinstance(priority_level, int):
+        return False
+
+    if not ( 1 <= priority_level <= 10):
+        return False
+    
+    return True

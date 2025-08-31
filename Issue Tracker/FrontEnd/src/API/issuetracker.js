@@ -84,7 +84,7 @@ export const deleteData = async (id) => {
 
 export const updateData = async (id, dataToUpdate) => {
   try {
-    const response = await fetch(`${ITPrefix}${ITDelete}/${id}`, {
+    const response = await fetch(`${ITPrefix}${ITUpdate}/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataToUpdate),
