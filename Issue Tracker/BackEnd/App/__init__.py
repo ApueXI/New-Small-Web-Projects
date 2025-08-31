@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from pathlib import Path
@@ -15,26 +15,27 @@ logging.basicConfig(level=logging.INFO,
                     datefmt= DATEFMT)
 
 db = SQLAlchemy()
+app = Flask(__name__)
+
 env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
 DB_NAME = os.getenv("DB_NAME")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 logger = logging.getLogger(__name__)
 
 def run_app():
-    app = Flask(__name__)
 
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
-    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+    app.config["SECRET_KEY"] = SECRET_KEY
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+    
     from .IssueTracker import issue_tracker
     app.register_blueprint( issue_tracker, url_prefix="/api")
 
-    CORS(app)
-
     db.init_app(app)
+    CORS(app)
 
     create_database(app)
 
@@ -51,3 +52,7 @@ def create_database(app):
         with app.app_context():
             db.create_all()
             logger.info("Database has been created")
+
+@app.before_request
+def get_localhost():
+    app.logger.info(f"On localhost: {request.host}")

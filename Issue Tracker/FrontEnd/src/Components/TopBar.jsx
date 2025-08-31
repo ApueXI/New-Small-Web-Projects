@@ -1,8 +1,16 @@
-export default function TopBar({title = "No Title"}) {
+export default function TopBar({
+  data = {},
+  titleNumber = false,
+  titleHome = false,
+}) {
+  const ternaryTitle = titleHome ? "Home" : "Issue Tracker";
+  const displayTitle = titleNumber ? `#${data.id} ${data.title}` : ternaryTitle;
 
   return (
     <div className="bg-[hsl(48,96%,79%)] flex">
-      <h1 className="bg-[hsl(23,83%,51%)] sm:font-bold font-black px-5 py-2 text-[clamp(25px,3vw,50px)] mx-auto my-5 rounded-lg ">{title}</h1>
+      <h1 className="bg-[hsl(23,83%,51%)] sm:font-bold font-black px-5 py-2 text-[clamp(25px,3vw,50px)] mx-auto my-5 rounded-lg ">
+        {displayTitle}
+      </h1>
     </div>
   );
 }

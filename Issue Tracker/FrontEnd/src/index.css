@@ -43,8 +43,13 @@ body {
   .formPointer label  {
     @apply cursor-pointer;
   }
+
   .formPointer button  {
     @apply cursor-pointer;
+  }
+
+  .viewSpan{
+    @apply bg-[hsl(0,0%,100%,0.8)] p-1 rounded-lg;
   }
 }
 

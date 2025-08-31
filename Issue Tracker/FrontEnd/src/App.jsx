@@ -1,9 +1,12 @@
-import Home from "./Components/Home";
+import { Home } from "./Pages/Home";
+import ViewIsssue from "./Pages/ViewIssue";
+import { Routes, Route } from "react-router-dom";
 
 export default function App() {
   return (
-    <>
-      <Home></Home>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/view/:id" element={<ViewIsssue />} />
+    </Routes>
   );
 }
