@@ -48,7 +48,7 @@ export default function ViewIsssue() {
     <>
       <TopBar data={issueData} titleNumber={true}></TopBar>
       {showForm && (
-        <IssueForm hideForm={handleFormHide} data={issueData}></IssueForm>
+        <IssueForm hideForm={handleFormHide} data={issueData} updateTitle={true}></IssueForm>
       )}
       <div className="bg-color-muted-gray-yellow w-[clamp(350px,70vw,700px)] mx-auto mt-20 rounded-lg flex-Col-Center justify-center">
         <Link

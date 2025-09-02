@@ -4,6 +4,7 @@ from flask_cors import CORS
 from pathlib import Path
 from dotenv import load_dotenv
 import logging, os
+import mysql.connector
 
 FORMAT = "%(filename)s - %(asctime)s - %(levelname)s - %(message)s"
 DATEFMT ="%Y-%M-%D %H:%M:%S"
@@ -20,14 +21,17 @@ app = Flask(__name__)
 env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
-DB_NAME = os.getenv("DB_NAME")
 SECRET_KEY = os.getenv("SECRET_KEY")
+MYSQL_PASS = os.getenv("MYSQL_PASS")
+MYSQL_DB = os.getenv("MYSQL_DB")
+MYSQL_USER = os.getenv("MYSQL_USER")
+MYSQL_HOST = os.getenv("MYSQL_HOST")
 
 logger = logging.getLogger(__name__)
 
 def run_app():
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}/{MYSQL_DB}"
     app.config["SECRET_KEY"] = SECRET_KEY
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     
@@ -46,9 +50,6 @@ def run_app():
     return app
 
 def create_database(app):
-    db_path = Path(app.instance_path) / DB_NAME
-
-    if not db_path.exists():
         with app.app_context():
             db.create_all()
             logger.info("Database has been created")
