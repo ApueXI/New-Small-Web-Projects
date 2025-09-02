@@ -48,6 +48,13 @@ export function Home() {
           hideForm={handleFormHide}
         />
       )}
+
+      {/* <div className="relative flex-Col-Center">
+        <div className="bg-black text-white absolute top-60 h-50 w-60 flex-Col-Center flex-row justify-center gap-5 rounded-lg">
+          <button className="bg-red-500 py-1 px-2 rounded-lg hover:scale-125 transi">Delete</button>
+          <button className="bg-blue-500 py-1 px-2 rounded-lg hover:scale-125 transi">Cancel</button>
+        </div>
+      </div> */}
       <div className="flex pl-5">
         <button
           className=" my-5 px-2 py-1.5 font-bold text-[clamp(20px,3vw,35px)] rounded-lg cursor-pointer transi bg-color-secondary-accent-yellow hover:bg-[hsl(38,92%,40%)] active:bg-[hsl(38,92%,40%)]"

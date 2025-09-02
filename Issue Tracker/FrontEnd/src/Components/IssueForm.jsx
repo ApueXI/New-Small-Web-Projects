@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-export default function IssueForm({ hideForm, data, submitData }) {
+export default function IssueForm({
+  hideForm,
+  data,
+  submitData,
+  updateTitle = false,
+}) {
   const [titleData, setTitleData] = useState(data?.title);
   const [priorityLevelData, setPriorityLevelData] = useState(
     data?.priority_level
@@ -32,7 +37,7 @@ export default function IssueForm({ hideForm, data, submitData }) {
       <div className="sm:w-[clamp(200px,60vw,600px)] w-[90%] pb-13 fixed rounded-md flex-Col-Center bg-[#3F3075] ">
         <div className="flex w-full">
           <h1 className="my-auto ml-6 bg-[hsl(253,42%,62%)] font-bold px-2 py-1.5 rounded-lg text-[clamp(20px,1.3vw,50px)]">
-            Add a new Issue
+            {updateTitle ? "U[date the Issue" : "Add a new Issue"}
           </h1>
           <button
             onClick={hideForm}
