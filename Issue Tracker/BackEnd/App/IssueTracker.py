@@ -20,7 +20,7 @@ def get_issues():
     sort = request.args.get("sort", "desc")
     statusD = request.args.get("query", "open")
 
-    order = Issues.id.desc() if sort == "asc" else Issues.id.asc()
+    order = Issues.priority_level.desc() if sort == "desc" else Issues.priority_level.asc()
 
     issues = Issues.query.filter(Issues.status.ilike(f"{statusD}")).order_by(order).all()
 
