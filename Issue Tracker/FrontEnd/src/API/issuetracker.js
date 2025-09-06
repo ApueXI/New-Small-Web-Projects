@@ -1,4 +1,5 @@
 const ITPrefix = "/api";
+const USERPREFIX = "user";
 const ITGet = "/issue/get";
 const ITSend = "/issue/send";
 const ITDelete = "/issue/delete";
@@ -9,6 +10,8 @@ export const getData = async (query, sort = "desc") => {
     const response = await fetch(
       `${ITPrefix}${ITGet}?sort=${sort}&query=${query}`
     );
+
+    fetch("api/issue/get");
 
     const data = await response.json();
 

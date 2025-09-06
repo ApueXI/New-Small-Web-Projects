@@ -1,10 +1,9 @@
 export default function TopBar({
   data = {},
   titleNumber = false,
-  titleHome = false,
+  titleHome = "default Title",
 }) {
-  const ternaryTitle = titleHome ? "Home" : "Issue Tracker";
-  const displayTitle = titleNumber ? `#${data.id} ${data.title}` : ternaryTitle;
+  const displayTitle = titleNumber ? `#${data.id} ${data.title}` : titleHome;
 
   return (
     <div className="bg-[hsl(48,96%,79%)] flex">

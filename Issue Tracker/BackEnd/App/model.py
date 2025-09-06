@@ -1,4 +1,5 @@
 from App import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Issues(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,7 +23,7 @@ class Issues(db.Model):
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
-    password = db.Column(db.String(30), nullable=False)
+    _password = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
         return f"No. {self.id}"
@@ -31,5 +32,18 @@ class Users(db.Model):
         return{
             "id" : self.id,
             "username" : self.username,
-            "password" : self.password
+            "password" : self._password
         }
+    
+    def set_password(self, password):
+        self._password = generate_password_hash(password)
+
+    def checl_passowrd(self, password):
+        return check_password_hash(self._password, password)
+    
+class RefreshToken(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(36), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    revoked = db.Column(db.Boolean, default=False, nullable=False)
+    expires_at = db.Column(db.DateTime, nullable=False)
