@@ -39,7 +39,7 @@ def user_register():
                         "from" : "Python", 
                         "message" : "Missing credentials"}), 400
         
-    if Users.query.filter_by(username=data["username"]).first():
+    if Users.query.filter_by(username=username).first():
         logger.error("Username already exists")
         return jsonify({"status" : "error" , "ok" : False, 
                         "from" : "Python", 

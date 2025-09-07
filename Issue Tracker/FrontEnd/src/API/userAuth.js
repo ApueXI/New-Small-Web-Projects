@@ -62,13 +62,13 @@ export const userLogIn = async (dataToSend) => {
 };
 
 export const userLogout = async () => {
-  const csrfToken = getCookie("csrf_refresh_token");
+//   const csrfToken = getCookie("csrf_refresh_token");
   try {
     const response = await fetch(`${USERPREFIX}${USERLOGOUT}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken,
+        // "X-CSRF-TOKEN": csrfToken,
       },
       credentials: "include",
     });
@@ -100,7 +100,7 @@ export const testing = async () => {
     const data = await response.json();
 
     if (!data.ok) {
-      console.error("Getting data error");
+      console.error("Access token expired");
       console.log(data);
       return data;
     }

@@ -1,12 +1,14 @@
 from App import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
+# Issues table
 class Issues(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(30), nullable=False)
     priority_level = db.Column(db.Integer, nullable=False)
     details = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(10), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
     def __repr__(self):
         return f"No.{self.id}"
@@ -19,11 +21,13 @@ class Issues(db.Model):
             "details" : self.details,
             "status" : self.status
         }
-    
+
+# Users table
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
     _password = db.Column(db.String(256), nullable=False)
+    issues = db.relationship("Issues", backref="author", lazy=True)
 
     def __repr__(self):
         return f"No. {self.id}"
@@ -40,6 +44,7 @@ class Users(db.Model):
     def check_password(self, password):
         return check_password_hash(self._password, password)
     
+# Refreshtokens table
 class RefreshToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     jti = db.Column(db.String(36), unique=True, nullable=False)
