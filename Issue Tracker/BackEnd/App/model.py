@@ -23,7 +23,7 @@ class Issues(db.Model):
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
-    _password = db.Column(db.String(30), nullable=False)
+    _password = db.Column(db.String(256), nullable=False)
 
     def __repr__(self):
         return f"No. {self.id}"
@@ -31,14 +31,13 @@ class Users(db.Model):
     def get_user(self):
         return{
             "id" : self.id,
-            "username" : self.username,
-            "password" : self._password
+            "username" : self.username
         }
     
     def set_password(self, password):
         self._password = generate_password_hash(password)
 
-    def checl_passowrd(self, password):
+    def check_password(self, password):
         return check_password_hash(self._password, password)
     
 class RefreshToken(db.Model):

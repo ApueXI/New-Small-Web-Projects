@@ -44,6 +44,7 @@ def run_app():
     app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
     app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
     app.config["JWT_COOKIE_SECURE"] = False
+    app.config["JWT_COOKIE_CSRF_PROTECT"] = True
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=3)
 
@@ -54,7 +55,7 @@ def run_app():
     app.register_blueprint( user_auth, url_prefix="/user")
 
     db.init_app(app)
-    CORS(app)
+    CORS(app, supports_credentials=True)
 
     # create_database(app)
 
