@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 from .model import Issues
-from App import db
+from App import db, jwt
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,13 +15,20 @@ logger.addHandler(handler)
 
 issue_tracker = Blueprint("issue_tracker", __name__)
 
+@jwt.unauthorized_loader
+def unauthorized_access(err_msg):
+    logger.error(err_msg)
+    return jsonify({"status" : "error", "ok" : False, 
+                    "from" : "Python", "message" : "You need to log in"}), 401
+
 @issue_tracker.route("/issue/get", methods=["GET"])
+# @jwt_required()
 def get_issues():
 
     sort = request.args.get("sort", "desc")
     statusD = request.args.get("query", "open")
 
-    order = Issues.id.desc() if sort == "asc" else Issues.id.asc()
+    order = Issues.priority_level.desc() if sort == "desc" else Issues.priority_level.asc()
 
     issues = Issues.query.filter(Issues.status.ilike(f"{statusD}")).order_by(order).all()
 

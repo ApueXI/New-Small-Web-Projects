@@ -4,6 +4,7 @@ import InProgress from "../Components/InProgress";
 import Resolved from "../Components/Resolved";
 import IssueForm from "../Components/IssueForm";
 import { useState, useEffect, createContext } from "react";
+import { Link } from "react-router-dom";
 import { getData, sendData } from "../API/issuetracker";
 
 export const LoadDataContext = createContext();
@@ -40,7 +41,7 @@ export function Home() {
 
   return (
     <>
-      <TopBar></TopBar>
+      <TopBar titleHome="Issue Tracker"></TopBar>
       {showForm && (
         <IssueForm
           data={{}}
@@ -62,6 +63,10 @@ export function Home() {
         >
           + New Issue
         </button>
+        <Link to="sign_up" className="ml-5 my-5 px-2 py-1.5 font-bold text-[clamp(20px,3vw,35px)] rounded-lg cursor-pointer transi bg-color-secondary-accent-yellow hover:bg-[hsl(38,92%,40%)] active:bg-[hsl(38,92%,40%)]">
+        Go to User Sign up
+        </Link>
+        
       </div>
 
       <div className="flex flex-col items-center md:justify-evenly md:flex-row py-10 overflow-hidden bg-color-muted-gray-yellow">
