@@ -9,23 +9,28 @@ from App import db, jwt
 from datetime import datetime, timezone
 import logging
 
-logger = logging.getLogger(__name__)
-FORMAT = "%(name)s - %(asctime)s - %(funcName)s - %(lineno)d -  %(levelname)s - %(message)s "
+logger = logging.getLogger(__name__) # So you can organize your logs by having each file be different
+FORMAT = "%(name)s - %(asctime)s - %(funcName)s - %(lineno)d -  %(levelname)s - %(message)s " # Defines what the message should look like in the logs
 
-handler = logging.FileHandler("Users.log", mode="a")
+handler = logging.FileHandler("Users.log", mode="a") # Creates/selects the file the logs will be in. And defines what mode will be 'a' for appending
 formatter = logging.Formatter(FORMAT)
 
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+handler.setFormatter(formatter) # Sets the formatter you have have defines
+logger.addHandler(handler) # Finishes the logging config by adding if in the logger variable
 
-user_auth = Blueprint("user_auth", __name__)
+user_auth = Blueprint("user_auth", __name__) # Blueprint to organie your routes when you have many of them
 
+# Automatic callback to see if the JWT is expired
 @jwt.token_in_blocklist_loader
 def check_if_token_revoked(jwt_header, jwt_payload):
     jti = jwt_payload["jti"]
     token = RefreshToken.query.filter_by(jti=jti).first()
     return token is not None and token.revoked
 
+'''
+Method to register the user into the database
+Only register user, this doesnt create a JWT or tokens
+'''
 @user_auth.route("/register", methods=["POST"])
 def user_register():
 
@@ -64,6 +69,10 @@ def user_register():
                         "from" : "Python", 
                         "message" : "User register successful"}), 201
 
+'''
+Login method
+Creates a token for the each user to use
+'''
 @user_auth.route("/login", methods=["POST"])
 def user_login():
     data = request.get_json()
@@ -89,7 +98,6 @@ def user_login():
         return jsonify({"status" : "error" , "ok" : False, 
                         "from" : "Python", 
                         "message" : "Password not correct"}), 401
-
     
     access_token = create_access_token(identity=str(user.id))
     refresh_token = create_refresh_token(identity=str(user.id))
@@ -129,13 +137,13 @@ def protected_test():
     if not user:
         return jsonify({"status" : "error" , "ok" : False, 
                         "from" : "Python",
-                        "message" : "Login Unsuccessfull"})
+                        "message" : "Login Unsuccessfull"}), 404
     
     return jsonify({"status" : "success" , "ok" : True, 
                     "from" : "Python", "user" : data,
-                    "message" : "Login Successfull"})
+                    "message" : "Login Successfull"}), 200
 
-@user_auth.route("/ refresh", methods=["POST"])
+@user_auth.route("/refresh", methods=["POST"])
 @jwt_required(refresh=True)
 def refresh():
     jti = get_jwt()["jti"]
@@ -154,7 +162,7 @@ def refresh():
 
     set_access_cookies(response, access_token)
 
-    return response
+    return response, 200
 
 @user_auth.route("/logout", methods=["POST"])
 @jwt_required(refresh=True)
@@ -165,7 +173,7 @@ def logout():
     if not token:
         return jsonify({"status" : "error" , "ok" : False, 
                         "from" : "Python", 
-                        "message" : "Login Unsuccessfull"})
+                        "message" : "Token not found"}), 404
     
     token.revoked = True
     
@@ -182,7 +190,7 @@ def logout():
 
     logger.info("User has logout")
 
-    return response
+    return response, 200
 
 def commit_session():
     try:

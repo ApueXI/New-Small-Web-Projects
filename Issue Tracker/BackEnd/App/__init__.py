@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from flask_bcrypt import Bcrypt
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
@@ -33,6 +34,7 @@ jwt > initializes the JWT
 app = Flask(__name__)
 db = SQLAlchemy()
 jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
 
 '''
 env_path > gets/sets the absolute file dir/path of where you have the .env file
@@ -51,7 +53,7 @@ MYSQL_USER = os.getenv("MYSQL_USER")
 MYSQL_HOST = os.getenv("MYSQL_HOST")
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__) # So you can organize your logs by having each file be different
 
 def run_app():
 
@@ -66,10 +68,10 @@ def run_app():
     
     app.config["JWT_TOKEN_LOCATION"] = ["cookies"] # Sets the location where the jwt should be sent
     app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
-    app.config["JWT_COOKIE_SECURE"] = False # should be true in production 
+    app.config["JWT_COOKIE_SECURE"] = False # should be true in production. Enables cookieHTTPS 
     app.config["JWT_COOKIE_CSRF_PROTECT"] = False # should be true in production
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=15) # short lived token
-    app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=3) # lobe lived token to refresh the access token
+    app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=3) # long lived token to refresh the access token
 
     '''
     initializes the blueprint
