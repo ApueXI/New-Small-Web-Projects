@@ -1,1 +1,2 @@
-SELECT *  FROM issues
+SELECT *  FROM Issues
+

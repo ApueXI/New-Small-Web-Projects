@@ -4,23 +4,29 @@ from .model import Issues
 from App import db, jwt
 import logging
 
-logger = logging.getLogger(__name__)
-FORMAT = "%(name)s - %(asctime)s - %(funcName)s - %(lineno)d -  %(levelname)s - %(message)s "
 
-handler = logging.FileHandler("IssueTracker.log", mode="a")
-formatter = logging.Formatter(FORMAT)
+logger = logging.getLogger(__name__) # So you can organize your logs by having each file be different
+FORMAT = "%(name)s - %(asctime)s - %(funcName)s - %(lineno)d -  %(levelname)s - %(message)s " # Defines what the message should look like in the logs
 
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+handler = logging.FileHandler("IssueTracker.log", mode="a") # Creates/selects the file the logs will be in. And defines what mode will be 'a' for appending
+formatter = logging.Formatter(FORMAT) 
 
-issue_tracker = Blueprint("issue_tracker", __name__)
+handler.setFormatter(formatter) # Sets the formatter you have have defines
+logger.addHandler(handler) # Finishes the logging config by adding if in the logger variable
 
+issue_tracker = Blueprint("issue_tracker", __name__) # Blueprint to organie your routes when you have many of them
+
+# Custom error so i can flag the frontend with a Boolean for easy conditional rendering
 @jwt.unauthorized_loader
 def unauthorized_access(err_msg):
     logger.error(err_msg)
     return jsonify({"status" : "error", "ok" : False, 
                     "from" : "Python", "message" : "You need to log in"}), 401
 
+'''
+For getting all the issues from the database
+Sorts it by the status
+'''
 @issue_tracker.route("/issue/get", methods=["GET"])
 # @jwt_required()
 def get_issues():
@@ -39,18 +45,26 @@ def get_issues():
     return jsonify({"status" : "success", "ok" : True, 
                     "from" : "Python", "message" : data}), 200
 
+'''
+Gets the issues solo by filtering the ID of the issue
+This is for when the users click the issues into a new link
+'''
 @issue_tracker.route("/issue/get/<int:id>", methods=["GET"])
 def get_issues_solo(id):
 
     issue = Issues.query.get_or_404(id)
 
-    data = issue.get_data()
+    data = issue.get_data() # Helper method to get sqlalchemy object to Py Dict
 
     logger.info(f"{issue} {data}")
 
     return jsonify({"status" : "success", "ok" : True, 
                     "from" : "Python", "message" : data}), 200
 
+'''
+To Post a new issue
+validates each data from the json
+'''
 @issue_tracker.route("/issue/send", methods=["POST"])
 def send_issues():
 
@@ -91,6 +105,9 @@ def send_issues():
     return jsonify({"status" : "success", "ok" : True, 
                     "from" : "Python", "message" : data}), 200
 
+'''
+Deletes the issues by getting its ID
+'''
 @issue_tracker.route("/issue/delete/<int:id>", methods=["DELETE"])
 def delete_issue(id):
 
@@ -109,6 +126,10 @@ def delete_issue(id):
     return jsonify({"status" : "success", "ok" : True, 
                     "from" : "Python", "message" : "Deleted Succesfully"}), 200
 
+'''
+Have'nt testest yet
+Updates specific part of the issue by using PATCH(Havent tested PATCH yet in any of my projects)
+'''
 @issue_tracker.route("/issue/update/<int:id>", methods=["PATCH"])
 def update_issue(id):
     issue = Issues.query.get_or_404(id)
@@ -143,6 +164,9 @@ def update_issue(id):
     return jsonify({"status" : "success", "ok" : True, 
                     "from" : "Python", "message" : "Updated Sccuesfully"}), 200
 
+'''
+Helper method to avoid repreadted use of try except in each method
+'''
 def commit_session():
     try:
         db.session.commit()
@@ -153,7 +177,9 @@ def commit_session():
         logger.exception(f"Failed to commit to the database")
         return (False, str(e))
     
-
+'''
+Helper method to validate title
+'''
 def title_validate(title):
     if not (4 < len(title) < 30):
         return False
@@ -163,6 +189,9 @@ def title_validate(title):
     
     return True
 
+'''
+Helper method to validate title
+'''
 def priority_level_validate(priority_level):
 
     if not isinstance(priority_level, int):

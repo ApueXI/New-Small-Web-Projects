@@ -1,5 +1,6 @@
-from App import db
+from App import db, bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
+
 
 # Issues table
 class Issues(db.Model):
@@ -26,7 +27,7 @@ class Issues(db.Model):
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
-    _password = db.Column(db.String(256), nullable=False)
+    __password = db.Column("password", db.String(256), nullable=False)
     issues = db.relationship("Issues", backref="author", lazy=True)
 
     def __repr__(self):
@@ -35,14 +36,14 @@ class Users(db.Model):
     def get_user(self):
         return{
             "id" : self.id,
-            "username" : self.username
+            "username" : self.username,
         }
     
     def set_password(self, password):
-        self._password = generate_password_hash(password)
+        self.__password = bcrypt.generate_password_hash(password).decode("utf-8")
 
     def check_password(self, password):
-        return check_password_hash(self._password, password)
+        return bcrypt.check_password_hash(self.__password, password)
     
 # Refreshtokens table
 class RefreshToken(db.Model):
@@ -51,3 +52,6 @@ class RefreshToken(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     revoked = db.Column(db.Boolean, default=False, nullable=False)
     expires_at = db.Column(db.DateTime, nullable=False)
+
+    def __repr__(self):
+        return f"No. {self.id}"
