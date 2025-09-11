@@ -126,6 +126,9 @@ def user_login():
 
     return response, 200
 
+'''
+Funciton for testing the JWT
+'''
 @user_auth.route("/protected_test", methods=["GET"])
 @jwt_required()
 def protected_test():

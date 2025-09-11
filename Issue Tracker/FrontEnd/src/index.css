@@ -40,15 +40,15 @@ body {
     @apply bg-white rounded-lg mx-auto w-full px-2;
   }
 
-  .formPointer label  {
+  .formPointer label {
     @apply cursor-pointer;
   }
 
-  .formPointer button  {
+  .formPointer button {
     @apply cursor-pointer;
   }
 
-  .viewSpan{
+  .viewSpan {
     @apply bg-[hsl(0,0%,100%,0.8)] p-1 rounded-lg;
   }
 }
